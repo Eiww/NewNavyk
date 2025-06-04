@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Вопрос-ответ{% endblock %}
+{% block css %}
+{% endblock %}
+{% block main %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow">
+                    <div class="card-header bg-white">
+                        <h1 class="mb-0 text-center">
+                            {% if object %}
+                                Редактирование вопроса-ответа
+                            {% else %}
+                                Создание вопроса-ответа
+                            {% endif %}
+                        </h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-4">
+                                        <label class="form-label required">{{ form.question.label }}</label>
+                                        <input type="text" name="{{ form.question.name }}" class="form-control"
+                                               value="{{ form.question.value|default_if_none:'' }}">
+                                        {% if form.question.errors %}
+                                            <div class="text-danger">{{ form.question.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label required">{{ form.answer.label }}</label>
+                                        <textarea name="{{ form.answer.name }}" class="form-control">{{ form.answer.value|default_if_none:'' }}</textarea>
+                                        {% if form.answer.errors %}
+                                            <div class="text-danger">{{ form.answer.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-flex justify-content-between">
+                                <button type="submit" class="btn" style="background-color: #9569CB; color: white">Сохранить изменения</button>
+                                <a href="{% url 'admin_panel:faq_list' %}" class="btn btn-secondary">Отмена</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

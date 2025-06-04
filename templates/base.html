@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Контактная информация компании: адрес, телефон, электронная почта и карта проезда">
+    <meta property="og:title" content="Контакты | Профориентация для детей и взрослых">
+    <meta property="og:description" content="Свяжитесь с нами по любым вопросам профориентации и обучения">
+    <meta property="og:image" content="/static/images/contacts-og.jpg">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat|Cardo' rel='stylesheet' type='text/css'>
+    <link href='{% static 'css/style_main.css' %}' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/slick/slick.css' %}">
+    {% block css %}{% endblock %}
+</head>
+<body>
+<style>
+    @font-face {
+        font-family: 'Gropled';
+        src: url('{% static "fonts/Gropled-Bold.otf" %}') format('opentype');
+        font-weight: normal;
+        font-style: normal;
+    }
+</style>
+<header class="main_h">
+    <div class="custom-row" style="display: flex">
+        <a class="logo" href="{% url 'home' %}">НОВЫЙ НАВЫК</a>
+        <div class="custom-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav>
+            <ul>
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_superuser or "Manager" in request.user.groups.all|join:", "|safe %}
+                        <li>
+                            <div class="burger-menu" id="burgerMenu">
+                                Админ-панель
+                            </div>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                <li><a href="{% url 'home' %}">О центре</a></li>
+                <li><a href="{% url 'app_service:service' %}">Программы</a></li>
+                <li><a href="{% url 'faq' %}">Вопрос-ответ</a></li>
+                <li><a href="{% url 'contacts' %}">Контакты</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<div class="admin-sidebar">
+    <div class="sidebar-header">
+        <h3>Админ-панель</h3>
+        <button class="close-btn" id="closeSidebar">&times;</button>
+    </div>
+    <ul>
+        <li><a href="{% url 'admin_panel:admin_dashboard' %}">Главная</a></li>
+        <li><a href="{% url 'admin_panel:program_list' %}">Программы</a></li>
+        <li class="nav-item">
+            <a href="{% url 'admin_panel:faq_list' %}" class="nav-link">
+                <i class="nav-icon fas fa-question-circle"></i>
+                <p>Управление FAQ</p>
+            </a>
+        </li>
+    </ul>
+</div>
+{% block main %}
+{% endblock %}
+
+<div class="container">
+    <footer class="py-5">
+        <div class="row gy-4">
+
+            <div class="col-12 col-md-4">
+                <h5>Навигация сайта</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="{% url 'home' %}" class="footer-link">Главная страница</a></li>
+                    <li class="nav-item mb-2"><a href="{% url 'schedule' %}" class="footer-link">Расписание</a></li>
+                    <li class="nav-item mb-2"><a href="{% url 'app_service:service' %}"
+                                                 class="footer-link">Программы</a></li>
+                    <li class="nav-item mb-2"><a href="{% url 'faq' %}" class="footer-link">Вопрос-ответ</a></li>
+                    <li class="nav-item mb-2"><a href="{% url 'contacts' %}" class="footer-link">Контакты</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item mb-2">
+                            <a class="footer-link" href="{% url 'logout' %}">Выйти</a>
+                        </li>
+                    {% elif not user.is_authenticated %}
+                        <li class="nav-item mb-2">
+                            <a class="footer-link" href="{% url 'login' %}">Войти</a>
+                        </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <h5>Реквизиты</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="{% url 'privacy-policy' %}" class="footer-link">Политика
+                        конфиденциальности</a></li>
+                    <li class="nav-item mb-2"><a href="{% url 'agreement' %}" class="footer-link">Пользовательское
+                        соглашение</a></li>
+                    <li class="nav-item mb-2"><a href="{% url 'rekvizity' %}" class="footer-link">Реквизиты</a></li>
+                </ul>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <h5>Контакты</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="footer-link">Центр профориентации и развития «Новый
+                        Навык»</a></li>
+                    <li class="nav-item mb-2"><a href="https://2gis.ru/chita/firm/70000001094156301"
+                                                 class="footer-link">г. Чита, ул. Чкалова, 35</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="footer-link">+7 (924) 501 30-87</a></li>
+                    <li class="nav-item mb-2"><a
+                            href="mailto:Venus-s@mail.ru?subject=Заявка с сайта&body=Здравствуйте!%0AХочу узнать больше информации о ваших программах.%0AС уважением, [Ваше имя]"
+                            class="footer-link">Venus-s@mail.ru</a></li>
+                    <li class="nav-item mb-2"><a href="https://vk.com/newnavik" class="footer-link">Мы в Вконтакте</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center py-4 my-4 border-top">
+            <p class="mb-0 text-center text-sm-start">&copy; 2025 ИП Соболевская Светлана Сергеевна</p>
+        </div>
+    </footer>
+</div>
+<script>
+    $(window).scroll(function () {
+
+        if ($(window).scrollTop() > 100) {
+            $('.main_h').addClass('sticky');
+        } else {
+            $('.main_h').removeClass('sticky');
+        }
+    });
+
+    // Mobile Navigation
+    $('.custom-toggle').click(function () {
+        if ($('.main_h').hasClass('open-nav')) {
+            $('.main_h').removeClass('open-nav');
+        } else {
+            $('.main_h').addClass('open-nav');
+        }
+    });
+
+    $('.main_h li a').click(function () {
+        if ($('.main_h').hasClass('open-nav')) {
+            $('.navigation').removeClass('open-nav');
+            $('.main_h').removeClass('open-nav');
+        }
+    });
+
+    $('nav a').click(function (event) {
+        var id = $(this).attr("href");
+        var offset = 70;
+        var target = $(id).offset().top - offset;
+        $('html, body').animate({
+            scrollTop: target
+        }, 500);
+        event.preventDefault();
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.addEventListener('click', function (event) {
+            const mainHeader = document.querySelector('.main_h');
+            const toggleButton = document.querySelector('.custom-toggle');
+
+
+            if (!mainHeader.contains(event.target) && !toggleButton.contains(event.target)) {
+                mainHeader.classList.remove('open-nav');
+            }
+        });
+    });
+</script>
+<script>
+    const burgerMenu = document.getElementById('burgerMenu');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const sidebar = document.querySelector('.admin-sidebar');
+
+    burgerMenu.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+
+    closeSidebar.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!sidebar.contains(event.target) && !burgerMenu.contains(event.target)) {
+            sidebar.classList.remove('open');
+        }
+    });
+</script>
+{% block js %}
+
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+{% endblock %}
+
+
+</body>
+</html>

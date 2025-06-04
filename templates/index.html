@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+          xmlns="http://www.w3.org/1999/html"/>
+
+{% endblock %}
+
+{% block title %}НОВЫЙ НАВЫК | Профориентация для детей и взрослых{% endblock %}
+
+{% block main %}
+    <div class="hero">
+        <h1><span>УЧИСЬ. ОБЩАЙСЯ. РАЗВИВАЙСЯ</span></h1>
+        <a href="{% url 'app_service:service' %}" class="custom-btn">Выбрать свою </br> профессию</a>
+    </div>
+
+    <div class="container custom-container">
+        <h1 class="sec01" id="sec01">О центре</h1>
+        <p>Наш центр профориентации и развития «Новый навык» — это больше, чем просто выбор профессии. Мы предлагаем
+            комплексный анализ и консультирование, которые помогут вам и вашим детям сделать осознанный выбор пути,
+            соответствующего вашим интересам, ценностям и запросам рынка труда. Мы работаем как очно в Чите, так и
+            онлайн, что дает возможность каждому клиенту находиться в комфортных условиях.</p>
+        <h1>Комплексный подход к успешному выбору профессии</h1>
+        <p>Наши специалисты проводят всесторонний анализ, включающий беседу с родителями, тестирование интересов и
+            личностных качеств, оценку навыков и психологический профиль.</p>
+        <h1>Проверенные диагностики</h1>
+        <p> Мы используем лучшие методики тестирования от таких профессионалов, как:</p>
+
+        <div class="feature-block">
+            <div class="feature-item">
+                <object type="image/svg+xml" data="{% static 'image/psychology-book-svgrepo-com.svg' %}"
+                        class="svg-icon">
+                    Джон Генри Холланд
+                </object>
+                <div class="feature-text">Джон Генри Холланд</div>
+            </div>
+
+            <div class="feature-item">
+                <object type="image/svg+xml" data="{% static 'image/book-opened-svgrepo-com.svg' %}"
+                        class="svg-icon">
+                    Дэвид Макклелланд
+                </object>
+                <div class="feature-text">Дэвид Макклелланд</div>
+            </div>
+
+            <div class="feature-item">
+                <object type="image/svg+xml" data="{% static 'image/medical-history-doctor-svgrepo-com.svg' %}"
+                        class="svg-icon">
+                    Эдгар Шейн
+                </object>
+                <div class="feature-text">Эдгар Шейн</div>
+            </div>
+        </div>
+        <h1>Профессиональная поддержка на каждом этапе</h1>
+        <p>Одной из замечательных особенностей нашего центра является оказание психологических консультаций для
+            родителей и взрослых. Опытные профориентологи всегда готовы помочь вам в обсуждении карьерных траекторий и
+            других аспектов профессионального роста. </p>
+
+        <p>Мы предлагаем игровые профориентационные занятия и личные
+            консультации, которые сделают процесс выбора карьеры не только полезным, но и интересным.</p>
+
+        <p>Запишитесь на консультацию уже сегодня и позвольте нашим профессионалам стать вашими проводниками в мир
+            профессий!
+            Мы поддерживаем вас на каждом этапе и предлагаем гибкие способы оплаты: наличными и безналичными. Убедитесь,
+            что ваша карьера начнется с правильного выбора вместе с центром профориентации и развития «Новый навык».</p>
+
+        <h1 class="" id="">Галерея</h1>
+        <div class="responsive slider">
+            {% for photo in gallery_photos  %}
+            	<div> <img src="{{ photo.image.url }}" alt="Фото {{ forloop.counter }}"></div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.responsive').slick({
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 3,
+                            infinite: true,
+                            dots: true
+                        }
+                    },
+                    {
+                        breakpoint: 600,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        .btn-purple {
+            background-color: #9569CB;
+            color: white;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-purple:hover {
+            background-color: #8554B7;
+        }
+
+
+        .schedule-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 15px 0;
+        }
+
+        .frequency {
+            font-weight: bold;
+        }
+
+        .course-title {
+            font-size: 1.2rem;
+        }
+
+        .description {
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}
+{% block title %}НОВЫЙ НАВЫК | Расписание {% endblock %}
+{% block main %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h1 class="text-center mb-4">Расписание</h1>
+                {% for program in programs %}
+                    {% if program.start_date|default_if_none:"" %}
+                        <div class="schedule-item">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="flex-grow-1">
+                                    <h4 class="course-title">{{ program.title }}</h4>
+                                    <p class="description">{{ program.category }}</p>
+                                    <p class="description">{{ program.start_date }}</p>
+                                </div>
+                                <a href="{% url 'app_service:program_detail' program.pk %}" class="btn btn-purple">Записаться</a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

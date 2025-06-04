@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ program.title }} | НОВЫЙ НАВЫК{% endblock %}
+
+{% block css %}
+    <style>
+        .program-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: white;
+            overflow: hidden;
+        }
+
+        .program-image {
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .application-form {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .category-badge {
+            background-color: #9569CB;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="" style="top: 20px;">
+                    <div class="program-card mb-4">
+                        {% if program.image %}
+                            <img src="{{ program.image.url }}"
+                                 class="program-image"
+                                 alt="{{ program.title }}">
+                        {% endif %}
+                        <div class="p-3">
+                            <h1 class="mb-3">{{ program.title }}</h1>
+                            <div class="categories mb-3">
+                                {% for category in program.get_category_display %}{{ category }}{% endfor %}
+                            </div>
+                            <div class="price-display h4 text-black mb-4" style="font-weight: bolder">
+                                {{ program.price }} ₽
+                            </div>
+                        </div>
+                    </div>
+                    <div class="application-form">
+                        <h4 class="mb-4">Записаться на программу</h4>
+                        <form method="post" action="{% url 'app_service:apply' program.pk %}" id="applicationForm">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <input type="text" name="full_name" class="form-control" placeholder="ФИО" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="tel" name="phone" id="phoneInput" class="form-control"
+                                       placeholder="Телефон" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="consentCheckbox" required
+                                       style="accent-color: #9569CB;">
+                                <label class="form-check-label" for="consentCheckbox">
+                                    Я согласен(а) с
+                                    <a href="{% url 'agreement' %}" target="_blank"
+                                       style="color: #9569CB; text-decoration: underline;">
+                                        пользовательским соглашением
+                                    </a>
+                                    и
+                                    <a href="{% url 'privacy-policy' %}" target="_blank"
+                                       style="color: #9569CB; text-decoration: underline;">
+                                        политикой конфиденциальности
+                                    </a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 py-2"
+                                    style="background-color: #9569CB; color: white; border: none;"
+                                    id="submitBtn" disabled>
+                                Отправить заявку
+                            </button>
+                        </form>
+                    </div>
+
+                    <style>
+                        .form-check-input:checked {
+                            background-color: #9569CB;
+                            border-color: #9569CB;
+                        }
+                    </style>
+
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            Inputmask({mask: "+7 (999) 999-99-99"}).mask(document.getElementById("phoneInput"));
+                        });
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const phoneInput = document.getElementById("phoneInput");
+                            Inputmask({mask: "+7 (999) 999-99-99"}).mask(phoneInput);
+
+                            const form = document.getElementById('applicationForm');
+                            const fullName = form.querySelector('input[name="full_name"]');
+                            const email = form.querySelector('input[name="email"]');
+                            const checkbox = document.getElementById('consentCheckbox');
+                            const submitBtn = document.getElementById('submitBtn');
+
+                            function checkFormValidity() {
+                                const isNameValid = fullName.value.trim().length >= 2;
+
+                                const isPhoneValid = phoneInput.inputmask
+                                    ? phoneInput.inputmask.isComplete()
+                                    : false;
+
+                                const isEmailValid = email.checkValidity();
+
+                                const isCheckboxChecked = checkbox.checked;
+
+                                submitBtn.disabled = !(isNameValid && isPhoneValid && isEmailValid && isCheckboxChecked);
+                            }
+
+                            fullName.addEventListener('input', checkFormValidity);
+                            phoneInput.addEventListener('input', checkFormValidity);
+                            email.addEventListener('input', checkFormValidity);
+                            checkbox.addEventListener('change', checkFormValidity);
+
+                            checkFormValidity();
+                        });
+                    </script>
+
+                </div>
+            </div>
+
+            <div class="col-lg-8 mb-4">
+                <div class="program-card p-4">
+                    <h1 class="mb-3">{{ program.title }}</h1>
+
+                    <div class="program-description">
+                        {{ program.description|linebreaks }}
+                    </div>
+                    <div class="benefits-list mt-5">
+                        <h3>Что дает программа:</h3>
+                        <ul class="list-unstyled">
+                            {% for benefit in program.benefits_list.splitlines %}
+                                <li class="mb-2">
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M11 24H21V26H11V24Z" fill="#9569CB"/>
+                                        <path d="M13 28H19V30H13V28Z" fill="#9569CB"/>
+                                        <path d="M10.8152 18.14C9.87867 17.4257 9.1321 16.4921 8.64122 15.4214C8.15034 14.3507 7.93021 13.1758 8.00022 12C8.00286 9.87908 8.84657 7.84579 10.3463 6.34607C11.846 4.84635 13.8793 4.00265 16.0002 4V2C13.3489 2.00291 10.8071 3.05742 8.93236 4.93215C7.05763 6.80688 6.00313 9.34873 6.00022 12C5.93242 13.4528 6.21076 14.9009 6.81232 16.225C7.41388 17.5491 8.32143 18.7114 9.46022 19.616C10.4722 20.551 11.0002 21.081 11.0002 22H13.0002C13.0002 20.16 11.8902 19.134 10.8152 18.14Z"
+                                              fill="#9569CB"/>
+                                        <path d="M21 9.59L17.41 6L16 7.41L21 12.41L30 3.41L28.59 2L21 9.59Z"
+                                              fill="#9569CB"/>
+                                        <path d="M23.8 14C23.4313 15.6426 22.5047 17.1067 21.178 18.143C20.107 19.135 19 20.16 19 22H21C21 21.08 21.526 20.55 22.535 19.614C24.2886 18.2119 25.465 16.2137 25.84 14H23.8Z"
+                                              fill="#9569CB"/>
+                                    </svg>
+                                    {{ benefit }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

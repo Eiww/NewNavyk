@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <style>
+        :root {
+            --primary-color: #9569CB;
+            --text-color: #2D3436;
+            --border-radius: 10px;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px 0;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background: #F8F9FA;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .contact-item:hover {
+            background: #ffdd00;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-icon {
+            width: 35px;
+            height: 35px;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-item:hover .contact-icon {
+            transform: scale(1.1);
+        }
+
+        .map-container {
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .contact-title {
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-text {
+            color: #636E72;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+
+            .contact-item {
+                border-left: none;
+                border-top: 4px solid var(--primary-color);
+                flex-direction: row;
+                align-items: center;
+                padding: 15px;
+            }
+
+            .contact-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+{% endblock %}
+{% block title %}Контакты | Профориентация для детей и взрослых{% endblock %}
+{% block main %}
+    <div class="container custom-container">
+        <h1 class="fw-light text-center mb-5">КОНТАКТЫ</h1>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <svg class="contact-icon" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5 7 13 7 13s7-8 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                              fill="#9569CB"/>
+                    </svg>
+                    <div>
+                        <h3 class="contact-title">Адрес</h3>
+                        <p class="contact-text">г. Чита, ул. Чкалова, 35</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M6.00745 3.40686C7.68752 1.72679 10.5227 1.85451 11.6925 3.95063L12.3415 5.11356C13.1054 6.48238 12.7799 8.20946 11.6616 9.34143C11.6467 9.36184 11.5677 9.47677 11.5579 9.67758C11.5454 9.93391 11.6364 10.5267 12.5548 11.4451C13.4729 12.3632 14.0656 12.4545 14.3221 12.442C14.5231 12.4322 14.6381 12.3533 14.6585 12.3383C15.7905 11.2201 17.5176 10.8945 18.8864 11.6584L20.0493 12.3075C22.1454 13.4773 22.2731 16.3124 20.5931 17.9925C19.6944 18.8911 18.4995 19.6896 17.0953 19.7429C15.0144 19.8218 11.5591 19.2844 8.13735 15.8626C4.71556 12.4408 4.17818 8.98556 4.25706 6.90463C4.3103 5.50044 5.10879 4.30552 6.00745 3.40686ZM10.3827 4.68163C9.78363 3.60828 8.17394 3.36169 7.06811 4.46752C6.29276 5.24287 5.7887 6.09868 5.75599 6.96146C5.6902 8.6968 6.11864 11.7226 9.19801 14.8019C12.2774 17.8813 15.3031 18.3097 17.0385 18.2439C17.9013 18.2112 18.7571 17.7072 19.5324 16.9318C20.6382 15.826 20.3916 14.2163 19.3183 13.6173L18.1554 12.9683C17.432 12.5645 16.4158 12.7023 15.7025 13.4156L15.7023 13.4158C15.6322 13.4858 15.1864 13.9018 14.395 13.9403C13.5847 13.9797 12.604 13.6156 11.4942 12.5058C10.384 11.3956 10.02 10.4146 10.0597 9.60423C10.0985 8.81271 10.5147 8.36711 10.5843 8.29746L10.5844 8.29743C11.2977 7.58411 11.4354 6.56797 11.0317 5.84456L10.3827 4.68163Z"
+                              fill="#9569CB"/>
+                    </svg>
+                    <div>
+                        <h3 class="contact-title">Телефон</h3>
+                        <p class="contact-text">+7 (924) 501-30-70</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12ZM16 12V13.5C16 14.8807 17.1193 16 18.5 16V16C19.8807 16 21 14.8807 21 13.5V12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21H16"
+                              stroke="#9569CB" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                        <h3 class="contact-title">Эл. почта</h3>
+                        <p class="contact-text">Venus-s@mail.ru</p>
+                    </div>
+                </div>
+            </div>
+            <div class="map-container" role="region" aria-label="Карта расположения">
+                <div class="map-placeholder"
+                     data-src="https://makemap.2gis.ru/widget?data=eJw1kFFvgjAUhf9L9ygxF7FIeTNlU7fGWMyysMUHhA5rkJJacMz431fE9en2fuec3JwrUjoXWuQLoU7CaCnOKPy6ItPVAoXoRaSm0QI5qNaqFtrc-RVlqlTa8ieCfZLtLTfSlL0DXj3eGtpB0vJmG_EqpxdgLJaE-laWi3OmZW2kqqx4s5yP4G3PTU4JJCwuaMRbspgDm8WHNR1BEvFmTV1gXlwYG5Ts-_90taYArI2PXcRNzxPWZ-DVwDpg33Fx9y95QxYMkvfG7jNIzgWw_eBhFzsfeTvk8zano8EbxcX2OWDefGQP_l1VufhBoQv_7-agYiir66t4NLVRsjJWnylbqKxScy_Sdb0xdgmeBQ6ejMEDFwc7GyBzFM7I9LZz0CmtN-osh0auqEwNCgctBD74s0kAAXZQ2eNH3JS4GHse-L69T6mTBYENtc2qsvw4CFF-3rdGN-L2B22DkrQ ">
+                    <img src="{% static 'image/map.png' %}" alt="Предварительный просмотр карты"
+                         loading="lazy" class="placeholder-img">
+                    <div class="load-map-btn" tabindex="0" role="button" aria-label="Загрузить карту">
+                        <svg class="map-icon" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5 7 13 7 13s7-8 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                                  fill="#9569CB"/>
+                        </svg>
+                        <span>Показать карту</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mapPlaceholder = document.querySelector('.map-placeholder');
+            if (mapPlaceholder) {
+                mapPlaceholder.addEventListener('click', function () {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = mapPlaceholder.dataset.src;
+                    iframe.width = "100%";
+                    iframe.height = "100%";
+                    iframe.frameBorder = "0";
+                    iframe.style.position = "absolute";
+                    iframe.style.top = "0";
+                    iframe.style.left = "0";
+                    iframe.sandbox = "allow-modals allow-forms allow-scripts allow-same-origin allow-popups allow-top-navigation-by-user-activation";
+
+                    mapPlaceholder.innerHTML = '';
+                    mapPlaceholder.appendChild(iframe);
+                });
+            }
+
+            const animateOnScroll = () => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {threshold: 0.2});
+
+                document.querySelectorAll('.contact-item').forEach(item => {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    observer.observe(item);
+                });
+            };
+
+            animateOnScroll();
+        });
+    </script>
+{% endblock %}

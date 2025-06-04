@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Управление заявками{% endblock %}
+
+{% block main %}
+    <div class="admin-content">
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+                <div class="col-lg-6 col-md-8 mx-auto">
+                    <h2 class="fw-light">Управление заявками</h2>
+                    <p class="lead text-body-secondary">Здесь вы можете управлять заявками и изменять их статус.</p>
+                </div>
+            </div>
+        </section>
+        <div class="filters mb-4">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <select name="status" class="form-select">
+                        <option value="">Все статусы</option>
+                        {% for value, label in status_choices %}
+                            <option value="{{ value }}" {% if request.GET.status == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Фильтровать</button>
+                    <a href="?" class="btn btn-secondary">Сброс</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Программа</th>
+                    <th>Клиент</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for app in applications %}
+                    <tr class="{% if app.status == 'paid' %}table-success{% elif app.status == 'canceled' %}table-danger{% endif %}">
+                        <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>{{ app.program.title }}</td>
+                        <td>
+                            {{ app.full_name }}<br>
+                            {{ app.phone }}<br>
+                            {{ app.email }}
+                        </td>
+                        <td>{{ app.get_status_display }}</td>
+                        <td>
+                            <a href="{% url 'admin_panel:application_update' app.pk %}"
+                               class="btn btn-sm btn-outline-primary">
+                                Редактировать
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin_panel/partials/pagination.html' %}
+    </div>
+{% endblock %}

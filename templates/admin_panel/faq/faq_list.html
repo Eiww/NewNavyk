@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Управление FAQ{% endblock %}
+{% block main %}
+
+    <div class="admin-content">
+        <h1>Управление FAQ</h1>
+       
+        <a href="{% url 'admin_panel:faq_create' %}" class="btn btn-success float-right"
+           style="background-color: #9569CB; color: white;">
+            Добавить вопрос
+        </a>
+
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Вопрос</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for faq in faqs %}
+                    <tr>
+                        <td>{{ faq.question|truncatechars:60 }}</td>
+                        <td>
+                            <a href="{% url 'admin_panel:faq_update' faq.pk %}" class="btn btn-sm btn-light">
+                                Редактировать
+                            </a>
+                            <a href="{% url 'admin_panel:faq_delete' faq.pk %}" class="btn btn-sm btn-danger">
+                                Удалить
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

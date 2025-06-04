@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Удаление элемента FAQ{% endblock %}
+{% block main %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Удаление вопроса</h3>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="card-body">
+                <p>Вы уверены, что хотите удалить вопрос:</p>
+                <blockquote>{{ object.question }}</blockquote>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'admin_panel:faq_list' %}" class="btn btn-default">Отмена</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

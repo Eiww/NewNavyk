@@ -1,0 +1,139 @@
+
+.responsive.slider {
+    margin: 40px auto;
+    padding: 0 20px;
+    max-width: 1200px;
+}
+
+
+.slider img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.slick-slide {
+    height: auto;
+}
+
+.slick-dots {
+    position: relative;
+    bottom: -30px;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.slick-dots li {
+    margin: 0 5px;
+}
+
+.slick-dots li button {
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width: 12px;
+    height: 14px;
+    border-radius: 50%;
+    border-color: transparent;
+    background: rgba(190, 139, 253, 0.31);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.slick-dots li.slick-active button {
+    background: #9569CB;
+}
+
+.slick-prev,
+.slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    font-size: 0;
+    width: 40px;
+    height: 40px;
+    background: #9569cb;
+    color: #fff;
+    border-color: transparent;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: none !important;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background: #9569cb;
+}
+
+.slick-prev {
+    display: none; !important;
+}
+
+.slick-next {
+    display: none; !important;
+}
+
+.slick-prev::before,
+.slick-next::before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+}
+
+.slick-prev::before {
+    transform: rotate(-45deg);
+}
+
+.slick-next::before {
+    transform: rotate(135deg);
+}
+
+
+.responsive.slider {
+    margin: 40px auto;
+    padding: 0 20px;
+    max-width: 1200px;
+}
+
+
+.slider img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .responsive.slider {
+        padding: 0 10px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .responsive.slider {
+        padding: 0 5px;
+    }
+
+    .slider img {
+        border-radius: 6px;
+    }
+
+
+}

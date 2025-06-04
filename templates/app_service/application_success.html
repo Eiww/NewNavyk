@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Оплата программы{% endblock %}
+
+{% block main %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h2 class="mb-4">Спасибо за вашу заявку!</h2>
+                        <div class="alert alert-light">
+                            <h4 class="alert-heading">Инструкция по оплате:</h4>
+                            <ol class="text-start">
+                                <li>Скачайте QR-код ниже</li>
+                                <li>Откройте мобильное приложение вашего банка</li>
+                                <li>Выберите оплату по QR-коду</li>
+                                <li>Загрузите скачанный QR-код</li>
+                                <li>Введите сумму: <strong>{{ program_price }} ₽</strong></li>
+                                <li>Подтвердите оплату</li>
+                            </ol>
+                        </div>
+
+                        <div class="qr-code-container mb-4">
+                            <img src="{% static 'image/payment_qr.png' %}"
+                                 class="img-fluid qr-code mb-3"
+                                 alt="QR-код для оплаты">
+                            <div>
+                                <a href="{% static 'image/payment_qr.png' %}"
+                                   download="QR_НовыйНавык.png"
+                                   class="btn btn-lg w-100 mt-2 application-btn"
+                                   style="background-color: #9569CB; color: white;">
+                                    ⬇ Скачать QR-код
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="text-muted small">
+                            <p>После оплаты с вами свяжется наш менеджер для подтверждения</p>
+                            <a href="{% url 'app_service:service' %}" class="btn btn-outline-secondary">
+                                Вернуться к программам
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        strong {
+            color: #9569cb;
+            font-weight: bold;
+            text-decoration: underline #9569cb;
+        }
+
+        .qr-code {
+            max-width: 245px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        ol {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+{% endblock %}

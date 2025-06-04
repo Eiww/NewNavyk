@@ -1,0 +1,600 @@
+{% extends "base.html" %}
+
+{% block title %}Админ-панель{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        .admin-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            transition: transform 0.2s ease;
+            margin: 0 auto;
+            max-width: 400px;
+        }
+
+        .gallery-preview {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 250px;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 145px;
+            margin: 20px 0;
+        }
+
+        .swiper-slide {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #9569CB;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 1.2rem;
+        }
+
+
+        .user-table th {
+            background-color: #f8f9fa;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 10;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            transform: none;
+        }
+
+        .swiper-slide:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .admin-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background-color: #fff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex: 1 1 auto;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+
+
+        @media only screen and (max-width: 768px) {
+            .admin-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                max-width: 100%;
+            }
+
+            .card-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .btn {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .status-dropdown {
+                margin-top: 10px;
+            }
+        }
+
+        .status-dropdown {
+            margin-left: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .status-dropdown:focus {
+            outline: none;
+            border-color: #9569cb;
+            box-shadow: 0 0 4px rgba(149, 105, 203, 0.5);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+
+        .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 0;
+            border-collapse: collapse;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 1;
+        }
+
+        .table th,
+        .table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+            text-align: left;
+        }
+
+
+        @media only screen and (max-width: 768px) {
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .modal-body {
+                max-height: 50vh;
+            }
+
+            .table-responsive {
+                max-height: 300px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h2 class="fw-light">Добро пожаловать в админ-панель</h2>
+                <p class="lead text-body-secondary">Здесь вы можете управлять пользователями и настройками.</p>
+            </div>
+        </div>
+    </section>
+    <div class="admin-dashboard">
+        <div class="card">
+            <div class="card-header">
+                <h3>Заявки</h3>
+            </div>
+            <div class="card-body">
+                <p>Все заявки с сайта</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" style="background-color: #9569CB; color: white;"
+                            data-bs-toggle="modal" data-bs-target="#viewApplicationsModal">
+                        Просмотреть все
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Программы</h3>
+            </div>
+            <div class="card-body">
+                <p>Количество программ: <span id="user-count">{{ programs_count }}</span></p>
+                <div class="card-actions">
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin_panel:program_create' %}" class="btn btn-primary"
+                           style="background-color: #9569CB; color: white;">
+                            Добавить
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'admin_panel:program_list' %}" class="btn btn-secondary">
+                        Список
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3>Вопрос-ответ</h3>
+            </div>
+            <div class="card-body">
+                <p>Количество вопросов:<span id="user-count">{{ programs_count }}</span></p>
+                <div class="card-actions">
+                    {% if user.is_superuser %}
+                        <a href="{% url 'admin_panel:faq_create' %}" class="btn btn-primary"
+                           style="background-color: #9569CB; color: white;">
+                            Добавить
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'admin_panel:faq_list' %}" class="btn btn-secondary">
+                        Список
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Галерея</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="gallery-preview">
+                    <div class="swiper">
+                        <div class="swiper-wrapper">
+                            {% for photo in gallery_photos %}
+                                <div class="swiper-slide">
+                                    <img src="{{ photo.image.url }}" alt="Фото {{ forloop.counter }}">
+                                    <button class="btn btn-danger btn-sm delete-btn"
+                                            data-photo-id="{{ photo.id }}">
+                                        Удалить
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="btn btn-primary"
+                            style="background-color: #9569CB; color: white;"
+                            data-bs-toggle="modal"
+                            data-bs-target="#addGalleryModal">
+                        Добавить фото
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const swiper = new Swiper('.swiper', {
+                    loop: true,
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    centeredSlides: true,
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    breakpoints: {
+                        640: {slidesPerView: 1},
+                        1024: {slidesPerView: 1}
+                    }
+                });
+
+                document.body.addEventListener('click', function (e) {
+                    if (e.target.closest('.delete-btn')) {
+                        const btn = e.target.closest('.delete-btn');
+                        const photoId = btn.dataset.photoId;
+                        const slide = btn.closest('.swiper-slide');
+
+                        $('#deleteGalleryModal').modal('show');
+
+                        document.getElementById('confirmDelete').onclick = () => {
+                            fetch(`/admin_panel/gallery/${photoId}/delete/`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        slide.remove();
+                                        swiper.update();
+                                        showToast('Фото успешно удалено', 'success');
+                                    } else {
+                                        showToast('Ошибка удаления', 'danger');
+                                    }
+                                })
+                                .catch(error => {
+                                    showToast('Ошибка сети', 'danger');
+                                })
+                                .finally(() => {
+                                    $('#deleteGalleryModal').modal('hide');
+                                });
+                        }
+                    }
+                });
+
+                function showToast(message, type = 'success') {
+                    const toast = document.createElement('div');
+                    toast.className = `toast align-items-center text-white bg-${type} border-0`;
+                    toast.innerHTML = `<div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+                    document.body.appendChild(toast);
+                    new bootstrap.Toast(toast).show();
+                    setTimeout(() => toast.remove(), 3000);
+                }
+            });
+        </script>
+
+        <div class="modal fade" id="viewApplicationsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title">Все заявки</h5>
+                            <button type="button" class="btn-close" style="background-color: #9569CB; color: white;"
+                                    data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Имя</th>
+                                        <th>Телефон</th>
+                                        <th>Программа</th>
+                                        <th>Статус</th>
+                                        <th>Дата</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {% for app in all_applications %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ app.full_name }}</td>
+                                            <td>{{ app.phone }}</td>
+                                            <td>{{ app.program.title }}</td>
+                                            <td>
+                                                <select class="status-dropdown"
+                                                        data-application-id="{{ app.id }}"
+                                                        data-current-status="{{ app.status }}">
+                                                    {% for value, label in app.STATUS_CHOICES %}
+                                                        <option value="{{ value }}"
+                                                                {% if app.status == value %}selected{% endif %}>
+                                                            {{ label }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                            <td>{{ app.created_at|date:"d.m.Y H:i" }}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelector('#viewApplicationsModal').addEventListener('change', function (e) {
+                        if (e.target.classList.contains('status-dropdown')) {
+                            const dropdown = e.target;
+                            const applicationId = dropdown.dataset.applicationId;
+                            const newStatus = dropdown.value;
+                            const currentStatus = dropdown.dataset.currentStatus;
+
+                            fetch(`{% url 'admin_panel:update_application_status' 0 %}`.replace('0', applicationId), {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': '{{ csrf_token }}'
+                                },
+                                body: JSON.stringify({
+                                    status: newStatus
+                                })
+                            })
+                                .then(response => {
+                                    if (!response.ok) throw new Error('Network error');
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.status === 'success') {
+                                        dropdown.dataset.currentStatus = newStatus;
+                                        showToast('Статус успешно обновлен', 'success');
+                                        dropdown.querySelector(`option[value="${newStatus}"]`).selected = true;
+                                    } else {
+                                        throw new Error(data.error || 'Unknown error');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    dropdown.value = currentStatus;
+                                    showToast(error.message, 'danger');
+                                });
+                        }
+                    });
+
+                    function showToast(message, type = 'success') {
+                        const toast = document.createElement('div');
+                        toast.className = `toast align-items-center text-white bg-${type} border-0`;
+                        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+                        document.body.appendChild(toast);
+                        new bootstrap.Toast(toast).show();
+                        setTimeout(() => toast.remove(), 3000);
+                    }
+                });
+            </script>
+
+        </div>
+
+        <div class="modal fade" id="addGalleryModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Добавить фото</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">Удалить</button>
+                    </div>
+                    <form id="galleryForm" method="post" action="{% url 'admin_panel:gallery_create' %}"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Выберите изображение (JPEG/PNG, макс. 5MB)</label>
+                                <input class="form-control" type="file" name="image" required
+                                       accept="image/jpeg, image/png">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-primary" style="background-color: #9569CB;">Загрузить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteGalleryModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Подтверждение удаления</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Вы уверены, что хотите удалить это фото?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Удалить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
