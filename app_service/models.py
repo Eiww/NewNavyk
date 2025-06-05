@@ -1,3 +1,4 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from multiselectfield import MultiSelectField
 
@@ -32,7 +33,11 @@ class Program(models.Model):
         blank=False
     )
     benefits_list = models.TextField(verbose_name='Что дает программа?')
-    image = models.FileField(upload_to='programs/', verbose_name='Баннер программы')
+    image = models.ImageField(
+        upload_to='programs/',
+        verbose_name='Баннер программы',
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])]
+    )
     start_date = models.DateTimeField(blank=True, null=True, verbose_name='Дата проведения')
 
     def __str__(self):
